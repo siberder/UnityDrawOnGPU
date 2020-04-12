@@ -49,8 +49,10 @@ public class LotteryScratcher : MonoBehaviour
 
     RenderTexture DrawOnTextureGPU(Texture src, Vector2 nrmPos)
     {
+        int srcWidth = src.width;
         gpuDrawerMaterial.SetVector("_BrushPosition", nrmPos);
-        RenderTexture copiedTexture = new RenderTexture(src.width, src.height, 32);
+        gpuDrawerMaterial.SetFloat("_BrushSize", brushSize / (float)srcWidth);
+        RenderTexture copiedTexture = new RenderTexture(srcWidth, src.height, 32);
         Graphics.Blit(src, copiedTexture, gpuDrawerMaterial);
 
         return copiedTexture;

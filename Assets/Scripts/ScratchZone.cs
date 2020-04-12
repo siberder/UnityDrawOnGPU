@@ -15,12 +15,27 @@ public class ScratchZone : MonoBehaviour
         set => ScratchMeshRenderer.material.SetTexture(MASK_TEX_NAME, value);
     }
 
+    Texture initialTexture;
+
     private void Awake()
     {
         ScratchMeshRenderer = GetComponent<MeshRenderer>();
 
-        var initialTexture = ScratchMaskMaterialTexture;
+        initialTexture = ScratchMaskMaterialTexture;
 
+        CreateTexture();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyUp(KeyCode.R))
+        {
+            CreateTexture();
+        }
+    }
+
+    void CreateTexture()
+    {
         RenderTexture rt = new RenderTexture(initialTexture.width, initialTexture.height, 0);
         RenderTexture.active = rt;
         Graphics.Blit(initialTexture, rt);

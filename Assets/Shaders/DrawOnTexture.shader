@@ -43,34 +43,18 @@
             }
 
             sampler2D _MainTex;
-            //sampler2D _BrushTexture;
+            sampler2D _BrushTexture;
 
             float4 _BrushColor;
             float _BrushSize;
             float4 _BrushPosition;
 
-            half2 when_eq(half2 x, half2 y) {
-                return 1.0 - abs(sign(x - y));
-            }
-
-            half2 when_neq(half2 x, half2 y) {
-                return abs(sign(x - y));
-            }
-
-            half2 when_gt(half2 x, half2 y) {
+            half when_gt(half x, half y) {
                 return max(sign(x - y), 0.0);
             }
 
-            half2 when_lt(half2 x, half2 y) {
+            half when_lt(half x, half y) {
                 return max(sign(y - x), 0.0);
-            }
-
-            half2 when_ge(half2 x, half2 y) {
-                return 1.0 - when_lt(x, y);
-            }
-
-            half2 when_le(half2 x, half2 y) {
-                return 1.0 - when_gt(x, y);
             }
 
             fixed4 frag(v2f i) : SV_Target
@@ -79,9 +63,9 @@
                 half2 brushMin = _BrushPosition - brushHalf;
                 half2 brushMax = _BrushPosition + brushHalf;
                 float canDraw = when_gt(i.uv.x, brushMin.x) * when_lt(i.uv.x, brushMax.x) * when_gt(i.uv.y, brushMin.y) * when_lt(i.uv.y, brushMax.y);
-                fixed4 col = lerp(tex2D(_MainTex, i.uv), _BrushColor, canDraw);
-
-                return col;
+                float2 brushUVs = (i.uv - brushMin) / (brushMax - brushMin);
+                
+                return tex2D(_MainTex, i.uv) * lerp((1, 1, 1, 1), tex2D(_BrushTexture, brushUVs), canDraw);
             }
             ENDCG
         }

@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BrushTexture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d3bd479bf48637349ab4972fff236d07, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BrushSize: 0.1
+    - _BrushSize: 0.48828125
     m_Colors:
-    - _BrushColor: {r: 0, g: 0, b: 0, a: 1}
-    - _BrushPosition: {r: 0.7234558, g: 0.1602292, b: 0, a: 0}
+    - _BrushColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BrushPosition: {r: 0.3472457, g: 0.23886462, b: 0, a: 0}
