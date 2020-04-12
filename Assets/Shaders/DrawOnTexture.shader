@@ -64,8 +64,10 @@
                 half2 brushMax = _BrushPosition + brushHalf;
                 float canDraw = when_gt(i.uv.x, brushMin.x) * when_lt(i.uv.x, brushMax.x) * when_gt(i.uv.y, brushMin.y) * when_lt(i.uv.y, brushMax.y);
                 float2 brushUVs = (i.uv - brushMin) / (brushMax - brushMin);
-                
-                return tex2D(_MainTex, i.uv) * lerp((1, 1, 1, 1), tex2D(_BrushTexture, brushUVs), canDraw);
+                fixed4 albedo = tex2D(_MainTex, i.uv);
+                fixed4 color = lerp(albedo, _BrushColor, saturate((canDraw + tex2D(_BrushTexture, brushUVs).r) - 1));
+
+                return color;
             }
             ENDCG
         }

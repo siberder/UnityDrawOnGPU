@@ -3,6 +3,7 @@
 public class MouseDrawController : MonoBehaviour
 {
     public int brushSize = 10;
+    public Color brushColor = Color.black;
     public Texture2D brushTexture;
     [Range(0, 1)]
     public float brushHardness = 1f;
@@ -18,7 +19,7 @@ public class MouseDrawController : MonoBehaviour
 
     void Start()
     {
-        cam = Camera.main;        
+        cam = GetComponent<Camera>();        
     }
 
     void Update()
@@ -52,8 +53,11 @@ public class MouseDrawController : MonoBehaviour
     RenderTexture DrawOnTextureGPU(Texture src, Vector2 nrmPos)
     {
         int srcWidth = src.width;
+        // TODO: Optimize this
         gpuDrawerMaterial.SetVector("_BrushPosition", nrmPos);
         gpuDrawerMaterial.SetFloat("_BrushSize", brushSize / (float)srcWidth);
+        gpuDrawerMaterial.SetColor("_BrushColor", brushColor);
+
         RenderTexture copiedTexture = new RenderTexture(srcWidth, src.height, 32);
         Graphics.Blit(src, copiedTexture, gpuDrawerMaterial);
         DestroyImmediate(src);
