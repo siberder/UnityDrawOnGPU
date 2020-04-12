@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
 
-public class LotteryScratcher : MonoBehaviour
+public class MouseDrawController : MonoBehaviour
 {
     public int brushSize = 10;
-    public Material gpuDrawerMaterial;
     public Texture2D brushTexture;
     [Range(0, 1)]
     public float brushHardness = 1f;
 
-    Camera cam;    
+    Camera cam;
+    Material gpuDrawerMaterial;
+
+    private void Awake()
+    {
+        gpuDrawerMaterial = new Material(Shader.Find("Hidden/DrawOnTexture"));
+        gpuDrawerMaterial.SetTexture("_BrushTexture", brushTexture);
+    }
 
     void Start()
     {
@@ -21,10 +27,10 @@ public class LotteryScratcher : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hit))
         {
-            if (hit.collider.TryGetComponent<ScratchZone>(out var scratchZone))
+            if (hit.collider.TryGetComponent<DrawZone>(out var drawZone))
             {
-                var leftBot = scratchZone.ScratchMeshRenderer.bounds.center - scratchZone.ScratchMeshRenderer.bounds.extents;
-                var rightTop = scratchZone.ScratchMeshRenderer.bounds.center + scratchZone.ScratchMeshRenderer.bounds.extents;
+                var leftBot = drawZone.MeshRenderer.bounds.center - drawZone.MeshRenderer.bounds.extents;
+                var rightTop = drawZone.MeshRenderer.bounds.center + drawZone.MeshRenderer.bounds.extents;
 
                 var p1 = hit.point;
 
@@ -37,7 +43,7 @@ public class LotteryScratcher : MonoBehaviour
                         z = Mathf.InverseLerp(leftBot.z, rightTop.z, p1.z),
                     };
 
-                    scratchZone.ScratchMaskTexture = DrawOnTextureGPU(scratchZone.ScratchMaskTexture, pointOnTextureNormalized);
+                    drawZone.DrawTexture = DrawOnTextureGPU(drawZone.DrawTexture, pointOnTextureNormalized);
                 }
             }
         }
@@ -50,6 +56,7 @@ public class LotteryScratcher : MonoBehaviour
         gpuDrawerMaterial.SetFloat("_BrushSize", brushSize / (float)srcWidth);
         RenderTexture copiedTexture = new RenderTexture(srcWidth, src.height, 32);
         Graphics.Blit(src, copiedTexture, gpuDrawerMaterial);
+        DestroyImmediate(src);
 
         return copiedTexture;
     }    
