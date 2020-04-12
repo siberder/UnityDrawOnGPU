@@ -5,8 +5,10 @@ using UnityEngine;
 public class LotteryScratcher : MonoBehaviour
 {
     public int brushSize = 10;
-    public Color color = Color.black;
-    public AnimationCurve brushHardness = AnimationCurve.Linear(0, 0, 1, 1);
+    public Material gpuDrawerMaterial;
+    public Texture2D brushTexture;
+    [Range(0, 1)]
+    public float brushHardness = 1f;
 
     Camera cam;
 
@@ -39,37 +41,18 @@ public class LotteryScratcher : MonoBehaviour
                         z = Mathf.InverseLerp(leftBot.z, rightTop.z, p1.z),
                     };
 
-                    DrawOnTexture(pointOnTextureNormalized, size, scratchZone.ScratchMaskTexture, brushHardness);
+                    scratchZone.ScratchMaskMaterialTexture = DrawOnTextureGPU(scratchZone.ScratchMaskMaterialTexture, pointOnTextureNormalized);
                 }
             }
         }
     }
 
-    void DrawOnTexture(Vector2 nrmPos, float size, Texture2D texture, AnimationCurve brushHardness)
+    RenderTexture DrawOnTextureGPU(Texture src, Vector2 nrmPos)
     {
-        var width = texture.width;
-        var height = texture.height;
+        gpuDrawerMaterial.SetVector("_BrushPosition", nrmPos);
+        RenderTexture copiedTexture = new RenderTexture(src.width, src.height, 32);
+        Graphics.Blit(src, copiedTexture, gpuDrawerMaterial);
 
-        var px = Mathf.RoundToInt(nrmPos.x * width);
-        var py = Mathf.RoundToInt(nrmPos.y * height);
-
-        var cols = texture.GetPixels();
-
-        for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                var distance = Vector2.Distance(new Vector2(x, y), new Vector2(px, py));
-                if (distance <= size)
-                {
-                    float hardnessT = 1f - (distance / size);
-                    float hardness = brushHardness.Evaluate(hardnessT);
-                    cols[width * y + x] *= Color.white * hardness;
-                }
-            }
-        }
-
-        texture.SetPixels(cols);
-        texture.Apply();
+        return copiedTexture;
     }
 }

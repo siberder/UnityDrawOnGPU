@@ -9,15 +9,22 @@ public class ScratchZone : MonoBehaviour
     private const string MASK_TEX_NAME = "_MaskTex";
     
     public MeshRenderer ScratchMeshRenderer { get; private set; }
-    public Texture2D ScratchMaskTexture { get; private set; }
+    public Texture ScratchMaskMaterialTexture
+    {
+        get => ScratchMeshRenderer.material.GetTexture(MASK_TEX_NAME);
+        set => ScratchMeshRenderer.material.SetTexture(MASK_TEX_NAME, value);
+    }
 
     private void Awake()
     {
         ScratchMeshRenderer = GetComponent<MeshRenderer>();
-        var texture = ((Texture2D)ScratchMeshRenderer.material.GetTexture(MASK_TEX_NAME));
-        ScratchMaskTexture = new Texture2D(texture.width, texture.height);
-        ScratchMaskTexture.SetPixels(texture.GetPixels());
-        ScratchMaskTexture.Apply();
-        ScratchMeshRenderer.material.SetTexture(MASK_TEX_NAME, ScratchMaskTexture);
+
+        var initialTexture = ScratchMaskMaterialTexture;
+
+        RenderTexture rt = new RenderTexture(initialTexture.width, initialTexture.height, 0);
+        RenderTexture.active = rt;
+        Graphics.Blit(initialTexture, rt);
+
+        ScratchMaskMaterialTexture = rt;
     }
 }

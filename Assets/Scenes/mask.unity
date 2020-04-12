@@ -218,32 +218,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fbaa7f9abe305945b5ef3136b49cafc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brushSize: 75
-  color: {r: 0, g: 0, b: 0, a: 1}
-  brushHardness:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0.10175773
-      outSlope: 0.10175773
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.08519715
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  brushSize: 500
+  gpuDrawerMaterial: {fileID: 2100000, guid: 7d0e0931c2bd32344a98cb5e8b5408b8, type: 2}
+  brushTexture: {fileID: 2800000, guid: d3bd479bf48637349ab4972fff236d07, type: 3}
+  brushHardness: 1
+  _brushTexture: {fileID: 0}
 --- !u!1 &777378392
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +367,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6343bd5feb92d4e4e841a3538bb99dce, type: 2}
+  - {fileID: 2100000, guid: 7d0e0931c2bd32344a98cb5e8b5408b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
