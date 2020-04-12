@@ -1,10 +1,10 @@
 # Drawing on textures at runtime with GPU in UNITY
-This scripts (and a shader) allows you to draw on textures at runtime with lightning-fast speed, unlike if you trying to do the same on CPU using `GetPixels` and `SetPixels`.
+These scripts (and a shader) allows you to draw on textures at runtime with lightning-fast speed, unlike if you trying to do the same on CPU using `GetPixels` and `SetPixels`.
 
 ## In action
 ![Preview](/images/preview1.gif)
 
-**Stable drawing at *high FPS* (1000+ on Nvidia GTX 1060). Same result, but using CPU to draw runs at 10-15 FPS.**
+**Stable drawing at *high FPS* (1000+ on Nvidia GTX 1060). Same result, but using CPU to change texture runs at 10-15 FPS (trust me).**
 
 Also, there is an example with a "scratch" shader:
 
