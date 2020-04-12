@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LotteryScratcher : MonoBehaviour
 {
@@ -10,7 +8,7 @@ public class LotteryScratcher : MonoBehaviour
     [Range(0, 1)]
     public float brushHardness = 1f;
 
-    Camera cam;
+    Camera cam;    
 
     void Start()
     {
@@ -30,8 +28,6 @@ public class LotteryScratcher : MonoBehaviour
 
                 var p1 = hit.point;
 
-                var size = (Input.GetKey(KeyCode.LeftShift)) ? brushSize * 3 : brushSize;
-
                 if (Input.GetMouseButton(0))
                 {
                     var pointOnTextureNormalized = new Vector3
@@ -41,7 +37,7 @@ public class LotteryScratcher : MonoBehaviour
                         z = Mathf.InverseLerp(leftBot.z, rightTop.z, p1.z),
                     };
 
-                    scratchZone.ScratchMaskMaterialTexture = DrawOnTextureGPU(scratchZone.ScratchMaskMaterialTexture, pointOnTextureNormalized);
+                    scratchZone.ScratchMaskTexture = DrawOnTextureGPU(scratchZone.ScratchMaskTexture, pointOnTextureNormalized);
                 }
             }
         }
@@ -56,5 +52,5 @@ public class LotteryScratcher : MonoBehaviour
         Graphics.Blit(src, copiedTexture, gpuDrawerMaterial);
 
         return copiedTexture;
-    }
+    }    
 }
